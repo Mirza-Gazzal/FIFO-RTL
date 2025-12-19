@@ -1,0 +1,17 @@
+name: dv-ci
+on: [push, pull_request]
+
+jobs:
+  fifo_dv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+
+      - name: Compile
+        run: iverilog -g2012 -Wall -o sim.vvp rtl/fifo.sv tb/tb_fifo.sv
+
+      - name: Run
+        run: vvp sim.vvp
